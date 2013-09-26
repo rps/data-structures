@@ -8,8 +8,7 @@ var makeSet = function(){
 var setPrototype = {};
 
 setPrototype.add = function(input){ 
-  debugger;
-  this._storage[input] = (input in this._storage) ? this._storage[input] : null;
+  this._storage[input] = (input in this._storage) ? this._storage[input] : true;
 };
 
 setPrototype.contains = function(input){ 
@@ -25,15 +24,3 @@ var extend = function(to, from){
     to[keys] = from[keys];
   }
 };
-
-
-var myObj = makeSet();
-myObj.add("hello");
-myObj.add("goodbye");
-console.log(myObj);
-//myObj.contains("hello");
-myObj.remove("farewell");
-console.log(myObj);
-myObj.remove("goodbye");
-console.log(myObj);
-//myObj.contains("goodbye");
