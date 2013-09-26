@@ -1,8 +1,8 @@
 // Note: don't use an array to do this.
 var makeLinkedList = function(){
   var list = {
-    head : makeNode(12), //labels
-    tail : makeNode(26)  //labels
+    head : makeNode(12),
+    tail : makeNode(26) 
   };
   list.head.next = list.tail;
 
@@ -20,8 +20,14 @@ var makeLinkedList = function(){
     return result;
   };
 
-  list.contains = function(){
-    
+  list.contains = function(node, lookup){
+    if (node.value === lookup){
+      return true;
+    } else if (node.next !== null){
+      return list.contains(node.next, lookup);  
+    } else {
+      return false;
+    }
   };
 
   return list;
@@ -34,5 +40,3 @@ var makeNode = function(value){
 
   return node;
 };
-var m = makeLinkedList();
-console.log(m)
