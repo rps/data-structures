@@ -8,15 +8,18 @@ var makeSet = function(){
 var setPrototype = {};
 
 setPrototype.add = function(input){ 
-  this._storage[input] = (input in this._storage) ? this._storage[input] : true;
+  var jsonInput = JSON.stringify(input);
+  this._storage[jsonInput] = (jsonInput in this._storage) ? this._storage[jsonInput] : true;
 };
 
 setPrototype.contains = function(input){ 
-  return (input in this._storage) ? true : false;
+  var jsonInput = JSON.stringify(input);
+  return (jsonInput in this._storage) ? true : false;
 };
 
 setPrototype.remove = function(input){
-  delete this._storage[input];
+  var jsonInput = JSON.stringify(input);
+  delete this._storage[jsonInput];
 };
 
 var extend = function(to, from){
