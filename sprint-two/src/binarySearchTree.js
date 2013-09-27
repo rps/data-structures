@@ -34,9 +34,16 @@ binarySearchTreeMethods.insert = function(value){
   }
 };
 
-binarySearchTreeMethods.contains = function(value, tree){
-  var result = false;
-  return result;
+binarySearchTreeMethods.contains = function(value){
+  if (this.value === value){
+    return true;
+  } else if (this.value > value && this.left !== null) {
+    return this.left.contains(value);
+  } else if (this.value <= value && this.right !== null) {
+    return this.right.contains(value);
+  }
+
+  return false;
 };
 
 binarySearchTreeMethods.depthFirstLog = function(callback){
@@ -52,3 +59,4 @@ head.insert(6);
 head.insert(7);
 head.insert(13);
 head.insert(4);
+head.contains(4);
