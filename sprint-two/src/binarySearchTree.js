@@ -47,16 +47,13 @@ binarySearchTreeMethods.contains = function(value){
 };
 
 binarySearchTreeMethods.depthFirstLog = function(callback){
-
+  if(this.value){
+    callback.call(this);
+    if(this.left !== null){
+      this.left.depthFirstLog(callback);
+    }
+    if(this.right !== null){    
+      this.right.depthFirstLog(callback);
+    }
+  } 
 };
-
-var head = makeBinarySearchTree(8);
-head.insert(3);
-head.insert(10);
-head.insert(1);
-head.insert(14);
-head.insert(6);
-head.insert(7);
-head.insert(13);
-head.insert(4);
-head.contains(4);
