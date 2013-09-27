@@ -1,20 +1,33 @@
 var HashTable = function(){
+  this._size = 0;
   this._limit = 8;
   this._storage = makeLimitedArray(this._limit);
 };
 
-HashTable.prototype.insert = function(k, v){
+HashTable.prototype.insert = function(k, v, storeLocation){
+
+  storeLocation = storeLocation || this._storage;
+
   var i = getIndexBelowMaxForKey(k, this._limit); // (str, max)
   var inserted = {};
   inserted[k] = v;
-  if (this._storage.get(i) !== undefined){ //has a key already
-    var found = this._storage.get(i);
+  if (storeLocation.get(i) !== undefined){ //has a key already
+    var found = storeLocation.get(i);
     found[k] = v;
-    this._storage.set(i, found);
+    storeLocation.set(i, found);
   } else {
-    this._storage.set(i, inserted);
+    storeLocation.set(i, inserted);
+    this._size++; // increment size if an array spot gets filled
   }
+  
+  if(this._size / this._limit > 0.75){
+    this._limit *= 2;
+    this.resize(this._limit);
+  } 
+
 };
+
+
 
   // later increase size of hashtable
 
@@ -56,7 +69,26 @@ HashTable.prototype.remove = function(k){
   var found = this._storage.get(i);
   delete found[k];
   this._storage.set(i,found);
+  this._size--;
+  if (this._size / this._limit < 0.25){
+    this._limit /= 2;
+    this.resize(this._limit);
+  }
 };
+
+HashTable.prototype.resize = function(size){
+
+  var newStorage = makeLimitedArray(size);
+  var self = this;
+  this._storage.each(function(value,key){
+    if(value !== undefined){
+      debugger;
+      self.insert(key,value,newStorage)
+    }
+  });
+  this._storage = newStorage;
+};
+
 
 // use each to count non-undefined values in storage vs storage size (limit?)
 // if non-undefined / limit > .75, then each from end of storage array to fill 
