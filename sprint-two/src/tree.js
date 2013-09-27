@@ -31,6 +31,14 @@ var treeMethods = {
     parentChildren.splice(parentChildren.indexOf(this),1);
     this.parent = null;
     return this;
+  },
+
+
+  traverse: function(callback){
+    callback.call(this);
+    for (var i = 0; i < this.children.length; i++){
+      this.children[i].traverse(callback);     
+    }
   }
 
 };
@@ -40,3 +48,11 @@ var extend = function(tree, treeMethods) {
     tree[keys] = treeMethods[keys];
   }
 };
+
+var tree = makeTree(5);
+tree.addChild(10);
+tree.addChild(15);
+tree.children[0].addChild(20);
+tree.traverse(function(){ 
+  this.value += 1;
+});
