@@ -49,14 +49,15 @@ binarySearchTreeMethods.contains = function(value){
   return false;
 };
 
-binarySearchTreeMethods.depthFirstLog = function(callback){
-  if(this.value){
-    callback.call(this);
-    if(this.left !== null){
-      this.left.depthFirstLog(callback);
+binarySearchTreeMethods.depthFirstLog = function(callback, context){
+  context = context || this;
+  if(context.value){
+    callback.call(context);
+    if(context.left !== null){
+      context.left.depthFirstLog(callback);
     }
-    if(this.right !== null){    
-      this.right.depthFirstLog(callback);
+    if(context.right !== null){    
+      context.right.depthFirstLog(callback);
     }
   } 
 };
@@ -127,7 +128,24 @@ binarySearchTreeMethods.rebalance = function(leftCount,rightCount){
     parentNode.depthFirstLog(function(){
       targetNode.insert(this.value);
     });
-    return targetNode; // how to set this to targetNode?
+
+    console.log(targetNode);
+
+    this.value = targetNode.value;
+    this.left = targetNode.left;
+    this.right = targetNode.right;
+    this.parent = targetNode.parent;
+    this.level = targetNode.level;
+    this.left.depthFirstLog(function(){
+      delete this;
+    });
+    this.right.depthFirstLog(function(){
+      delete this;
+    });
+
+    targetNode.depthFirstLog(function(){
+      this.insert(this.value); // first this = this, second = targetnode
+    },this);
 }
 
 // var m = makeBinarySearchTree(30);
